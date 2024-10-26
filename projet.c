@@ -281,6 +281,17 @@ DemiJournee lireDemiJournee(const char *token) {
            (strcmp(token, "pm") == 0) ? APRES_MIDI : -1;
 }
 
+/********************************************************************************
+ *                                [Fonctions QSORT]                             *
+ *                                                                              *
+ *  Cette section regroupe toutes les fonctions utilisées pour le tri avec la   *
+ *  bibliothèque standard de C, `qsort`. Les fonctions de comparaison définies  *
+ *  ici permettent de trier les étudiants et les absences selon divers critères.*
+ *                                                                              *
+ *  Chaque fonction est utilisée en tant que callback pour la fonction `qsort`. *
+ *  Ces fonctions facilitent l'affichage des données de manière ordonnée,       *
+ *  notamment par groupe d'étudiants ou par date d'absence.                     *
+ ********************************************************************************/
 
 
 /**
@@ -350,6 +361,24 @@ int comparerAbsences(const void *a, const void *b) {
     }
 }
 
+
+/**
+ * @ingroup Fonctions_gestion
+ * @brief Compare deux étudiants pour le tri.
+ * 
+ * Cette fonction compare deux étudiants en fonction de leur groupe et de leur nom.
+ * Utilisée pour trier la liste des étudiants.
+ * 
+ * @param a Pointeur vers le premier étudiant.
+ * @param b Pointeur vers le second étudiant.
+ * @return int Différence entre les groupes ou comparaison des noms.
+ */
+int comparerEtudiants(const void *a, const void *b) {
+    const Etudiant *etudiantA = a;
+    const Etudiant *etudiantB = b;
+    int groupeDiff = etudiantA->groupe - etudiantB->groupe;
+    return (groupeDiff != 0) ? groupeDiff : strcmp(etudiantA->nom, etudiantB->nom);
+}
 
 /********************************************************************************
  *                             [Gestion des Étudiants]                          *
@@ -566,25 +595,6 @@ StatutAbsence determinerStatutAbsence(const Absence *absence, int jourCourant) {
             return NON_JUSTIFIEE;
         }
     }
-}
-
-
-/**
- * @ingroup Fonctions_gestion
- * @brief Compare deux étudiants pour le tri.
- * 
- * Cette fonction compare deux étudiants en fonction de leur groupe et de leur nom.
- * Utilisée pour trier la liste des étudiants.
- * 
- * @param a Pointeur vers le premier étudiant.
- * @param b Pointeur vers le second étudiant.
- * @return int Différence entre les groupes ou comparaison des noms.
- */
-int comparerEtudiants(const void *a, const void *b) {
-    const Etudiant *etudiantA = a;
-    const Etudiant *etudiantB = b;
-    int groupeDiff = etudiantA->groupe - etudiantB->groupe;
-    return (groupeDiff != 0) ? groupeDiff : strcmp(etudiantA->nom, etudiantB->nom);
 }
 
 
