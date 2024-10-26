@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# This is only required by this project
+*.exe
+output/*.txt
